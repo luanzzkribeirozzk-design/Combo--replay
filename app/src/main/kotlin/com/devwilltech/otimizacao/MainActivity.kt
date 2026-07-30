@@ -21,7 +21,6 @@ import com.devwilltech.otimizacao.ui.screens.*
 import com.devwilltech.otimizacao.ui.theme.OtimizacaoWillTechTheme
 import com.devwilltech.otimizacao.ui.theme.NeonYellow
 import com.devwilltech.otimizacao.ui.theme.DeepPurple
-import com.devwilltech.otimizacao.utils.IntegrityGuard
 import kotlinx.coroutines.delay
 
 enum class Screen {
@@ -34,14 +33,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Encerra o app se detectar assinatura adulterada (repack/clone) —
-        // só age depois que EXPECTED_SIGNATURE_SHA256 for preenchido em IntegrityGuard.
-        if (IntegrityGuard.isSignatureTampered(this)) {
-            finishAffinity()
-            return
-        }
-
         enableEdgeToEdge()
 
         setContent {

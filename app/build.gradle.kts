@@ -20,9 +20,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled   = true
-            isShrinkResources = true
-            isDebuggable      = false
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -31,18 +29,6 @@ android {
         debug {
             applicationIdSuffix = ".debug"
             isDebuggable = true
-        }
-    }
-
-    packaging {
-        resources {
-            // Remove metadados/arquivos que ajudam na engenharia reversa e não são necessários em runtime
-            excludes += setOf(
-                "META-INF/*.version",
-                "META-INF/*.kotlin_module",
-                "kotlin/**",
-                "DebugProbesKt.bin"
-            )
         }
     }
 
