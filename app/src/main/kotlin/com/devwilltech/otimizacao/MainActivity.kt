@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val uiState by viewModel.uiState.collectAsState()
-
+            
             LaunchedEffect(uiState.isHideStreamEnabled) {
                 if (uiState.isHideStreamEnabled) {
                     window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
@@ -47,52 +47,40 @@ class MainActivity : ComponentActivity() {
             }
 
             OtimizacaoWillTechTheme {
-                var currentScreen by remember {
-                    mutableStateOf(if (uiState.isLoggedIn) Screen.OPTIMIZATION else Screen.LOGIN)
-                }
+                var currentScreen by remember { mutableStateOf(if (uiState.isLoggedIn) Screen.OPTIMIZATION else Screen.LOGIN) }
 
                 if (currentScreen == Screen.LOGIN && !uiState.isLoggedIn) {
                     LoginScreen(viewModel = viewModel, onLoginSuccess = { currentScreen = Screen.OPTIMIZATION })
                 } else {
                     Scaffold(
-                        topBar = { KeyTimerHeader(viewModel) },
+                        topBar = {
+                            KeyTimerHeader(viewModel)
+                        },
                         bottomBar = {
                             NavigationBar(
                                 containerColor = Color.Black,
                                 tonalElevation = 8.dp
                             ) {
                                 NavigationBarItem(
-                                    selected  = currentScreen == Screen.OPTIMIZATION,
-                                    onClick   = { currentScreen = Screen.OPTIMIZATION },
-                                    label     = { Text("OTM", fontSize = 10.sp, fontWeight = FontWeight.Bold) },
-                                    icon      = {},
-                                    colors    = NavigationBarItemDefaults.colors(
-                                        selectedTextColor   = NeonYellow,
-                                        unselectedTextColor = Color.Gray,
-                                        indicatorColor      = Color.Transparent
-                                    )
+                                    selected = currentScreen == Screen.OPTIMIZATION,
+                                    onClick = { currentScreen = Screen.OPTIMIZATION },
+                                    label = { Text("OTM", fontSize = 10.sp, fontWeight = FontWeight.Bold) },
+                                    icon = {},
+                                    colors = NavigationBarItemDefaults.colors(selectedTextColor = NeonYellow, unselectedTextColor = Color.Gray, indicatorColor = Color.Transparent)
                                 )
                                 NavigationBarItem(
-                                    selected  = currentScreen == Screen.BYPASS,
-                                    onClick   = { currentScreen = Screen.BYPASS },
-                                    label     = { Text("BYPASS", fontSize = 10.sp, fontWeight = FontWeight.Bold) },
-                                    icon      = {},
-                                    colors    = NavigationBarItemDefaults.colors(
-                                        selectedTextColor   = DeepPurple,
-                                        unselectedTextColor = Color.Gray,
-                                        indicatorColor      = Color.Transparent
-                                    )
+                                    selected = currentScreen == Screen.BYPASS,
+                                    onClick = { currentScreen = Screen.BYPASS },
+                                    label = { Text("BYPASS", fontSize = 10.sp, fontWeight = FontWeight.Bold) },
+                                    icon = {},
+                                    colors = NavigationBarItemDefaults.colors(selectedTextColor = DeepPurple, unselectedTextColor = Color.Gray, indicatorColor = Color.Transparent)
                                 )
                                 NavigationBarItem(
-                                    selected  = currentScreen == Screen.SENSI,
-                                    onClick   = { currentScreen = Screen.SENSI },
-                                    label     = { Text("SENSI", fontSize = 10.sp, fontWeight = FontWeight.Bold) },
-                                    icon      = {},
-                                    colors    = NavigationBarItemDefaults.colors(
-                                        selectedTextColor   = Color.Cyan,
-                                        unselectedTextColor = Color.Gray,
-                                        indicatorColor      = Color.Transparent
-                                    )
+                                    selected = currentScreen == Screen.SENSI,
+                                    onClick = { currentScreen = Screen.SENSI },
+                                    label = { Text("SENSI", fontSize = 10.sp, fontWeight = FontWeight.Bold) },
+                                    icon = {},
+                                    colors = NavigationBarItemDefaults.colors(selectedTextColor = Color.Cyan, unselectedTextColor = Color.Gray, indicatorColor = Color.Transparent)
                                 )
                             }
                         }
@@ -100,9 +88,9 @@ class MainActivity : ComponentActivity() {
                         Surface(modifier = Modifier.padding(innerPadding)) {
                             when (currentScreen) {
                                 Screen.OPTIMIZATION -> MainScreen(viewModel = viewModel)
-                                Screen.BYPASS       -> BypassScreen(viewModel = viewModel)
-                                Screen.SENSI        -> SensiScreen(viewModel = viewModel)
-                                else                -> {}
+                                Screen.BYPASS -> BypassScreen(viewModel = viewModel)
+                                Screen.SENSI -> SensiScreen(viewModel = viewModel)
+                                else -> {}
                             }
                         }
                     }
@@ -115,45 +103,25 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun KeyTimerHeader(viewModel: MainViewModel) {
     val uiState by viewModel.uiState.collectAsState()
-    var timeLeft by remember { mutableStateOf("Verificando...") }
+    var timeLeft by remember { mutableStateOf("00d 00h 00m 00s") }
 
-    // ⚡ FIX: trata os 3 casos — carregando, ilimitada, e countdown real
-    LaunchedEffect(uiState.keyData, uiState.isFetchingKey) {
-        val keyData = uiState.keyData
-
-        // Ainda buscando dados na API
-        if (uiState.isFetchingKey) {
-            timeLeft = "Verificando..."
-            return@LaunchedEffect
-        }
-
-        // keyData não disponível (API offline ou não respondeu)
-        if (keyData == null) {
-            timeLeft = "Sem conexão"
-            return@LaunchedEffect
-        }
-
-        // validity = 0 → key ilimitada
-        if (keyData.validity <= 0) {
-            timeLeft = "Ilimitada ∞"
-            return@LaunchedEffect
-        }
-
-        // Countdown real
+    LaunchedEffect(uiState.keyData) {
         while (true) {
-            val now          = System.currentTimeMillis()
-            val firstUsed    = keyData.firstUsed?.toLongOrNull() ?: now
-            val expiration   = firstUsed + (keyData.validity.toLong() * 24L * 60 * 60 * 1000)
-            val diff         = expiration - now
+            val now = System.currentTimeMillis()
+            val firstUsedStr = uiState.keyData?.firstUsed
+            val firstUsed = firstUsedStr?.toLongOrNull() ?: now
+            val validityDays = uiState.keyData?.validity ?: 0
+            val expirationTime = firstUsed + (validityDays.toLong() * 24 * 60 * 60 * 1000L)
+            val diff = expirationTime - now
 
             if (diff <= 0) {
                 timeLeft = "EXPIRADA"
                 break
             }
 
-            val d = diff / (24L * 60 * 60 * 1000)
-            val h = (diff / (60L * 60 * 1000)) % 24
-            val m = (diff / (60L * 1000)) % 60
+            val d = diff / (24 * 60 * 60 * 1000L)
+            val h = (diff / (60 * 60 * 1000L)) % 24
+            val m = (diff / (60 * 1000L)) % 60
             val s = (diff / 1000L) % 60
             timeLeft = String.format("%02dd %02dh %02dm %02ds", d, h, m, s)
             delay(1000)
@@ -168,19 +136,12 @@ fun KeyTimerHeader(viewModel: MainViewModel) {
         contentAlignment = Alignment.Center
     ) {
         Row(
-            modifier = Modifier
-                .padding(horizontal = 16.dp, vertical = 4.dp)
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
                 .background(Color(0xFF1A1A1A), RoundedCornerShape(99.dp))
                 .padding(horizontal = 16.dp, vertical = 6.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            val dotColor = when {
-                uiState.isFetchingKey      -> Color.Yellow
-                uiState.keyData == null    -> Color.Gray
-                timeLeft == "EXPIRADA"     -> Color.Red
-                else                       -> Color.Green
-            }
-            Box(modifier = Modifier.size(8.dp).background(dotColor, RoundedCornerShape(50.dp)))
+            Box(modifier = Modifier.size(8.dp).background(Color.Green, RoundedCornerShape(50.dp)))
             Spacer(Modifier.width(8.dp))
             Text("KEY EXPIRA EM: ", color = Color.Gray, fontSize = 10.sp, fontWeight = FontWeight.Bold)
             Text(timeLeft, color = NeonYellow, fontSize = 11.sp, fontWeight = FontWeight.Black)
