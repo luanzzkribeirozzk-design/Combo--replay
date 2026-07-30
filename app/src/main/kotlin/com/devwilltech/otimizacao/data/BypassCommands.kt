@@ -6,7 +6,7 @@ object BypassCommands {
     const val FF_MAX    = "com.dts.freefiremax"
 
     // Versões atualizadas de cada jogo
-    const val VER_FFN = "1.129.1"
+    const val VER_FFN = "1.128.2"
     const val VER_FFM = "2.126.1"
 
     // Gera comando de transferência robusto (Android 10-17)
