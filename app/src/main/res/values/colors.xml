@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#ffd700</color>
+    <color name="colorPrimaryVariant">#ffa500</color>
+    <color name="colorSecondary">#cc8800</color>
+    <color name="colorOnPrimary">#000000</color>
+    <color name="colorOnSecondary">#000000</color>
+    <color name="windowBackground">#080800</color>
+    <color name="statusBarColor">#080800</color>
+    <color name="navigationBarColor">#080800</color>
+</resources>
