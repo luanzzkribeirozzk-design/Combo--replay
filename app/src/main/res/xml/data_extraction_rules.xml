@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Bloqueia qualquer forma de extração dos dados do app (backup na nuvem,
+    transferência ao trocar de aparelho, adb backup). Isso evita que a key
+    de licença salva em SharedPreferences (PrefsManager) seja copiada de um
+    aparelho para outro fora do fluxo normal de login.
+-->
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude domain="sharedpref" />
+        <exclude domain="database" />
+        <exclude domain="file" />
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="sharedpref" />
+        <exclude domain="database" />
+        <exclude domain="file" />
+    </device-transfer>
+</data-extraction-rules>
