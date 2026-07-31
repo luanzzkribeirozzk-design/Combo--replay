@@ -32,12 +32,28 @@ jobs:
           rm -f app/src/main/java/com/replayx/app/ui/LoginActivity.kt
           echo "Arquivos obsoletos removidos"
 
-      - name: Build APK
-        run: ./gradlew assembleDebug --no-daemon --stacktrace
+      - name: Restaurar keystore de release
+        env:
+          RX_KEYSTORE_B64: ${{ secrets.RX_KEYSTORE_B64 }}
+        run: |
+          if [ -n "$RX_KEYSTORE_B64" ]; then
+            echo "$RX_KEYSTORE_B64" | base64 -d > app/replayx-release.jks
+            echo "Keystore restaurada."
+          else
+            echo "Sem RX_KEYSTORE_B64 configurada — build sai sem assinatura de release."
+          fi
+
+      - name: Build APK (release)
+        env:
+          RX_KEYSTORE_PATH: ${{ secrets.RX_KEYSTORE_B64 && 'replayx-release.jks' || '' }}
+          RX_KEYSTORE_PASSWORD: ${{ secrets.RX_KEYSTORE_PASSWORD }}
+          RX_KEY_ALIAS: ${{ secrets.RX_KEY_ALIAS }}
+          RX_KEY_PASSWORD: ${{ secrets.RX_KEY_PASSWORD }}
+        run: ./gradlew assembleRelease --no-daemon --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: ReplayX-APK
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: app/build/outputs/apk/release/app-release.apk
           retention-days: 30

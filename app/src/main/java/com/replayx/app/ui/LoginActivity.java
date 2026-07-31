@@ -283,8 +283,29 @@ public class LoginActivity extends AppCompatActivity {
                     pauseSec = java.time.Instant.parse(ts).getEpochSecond();
                 }
 
+                // ── PASSO 6.5: Fallback local de firstUsed ──
+                // Se o Firestore não tem o timestamp real (porque o PATCH do passo 8
+                // está sendo bloqueado pelas Security Rules — HTTP 403), o app não pode
+                // ficar tratando cada login como "primeira vez". Guarda o primeiro uso
+                // LOCALMENTE (por key) e reaproveita esse valor enquanto o servidor não
+                // tiver um valor real. Assim que o Firestore passar a responder certo,
+                // o valor real do servidor volta a ter prioridade.
+                SharedPreferences kp = getSharedPreferences(PREFS, MODE_PRIVATE);
+                String localFirstKey = "kx_local_first_" + key.hashCode();
+                if (!hasRealFirstUsed) {
+                    long localFirst = kp.getLong(localFirstKey, -1L);
+                    if (localFirst > 0L) {
+                        firstSec = localFirst; // já foi usada antes nesse aparelho — não reseta
+                    } else {
+                        kp.edit().putLong(localFirstKey, nowSec).apply(); // primeira vez nesse aparelho
+                        firstSec = nowSec;
+                    }
+                } else {
+                    kp.edit().putLong(localFirstKey, firstSec).apply(); // servidor sincronizou, guarda igual
+                }
+
                 // ── PASSO 7: Verificar expiração ──
-                if (hasRealFirstUsed && durationSec > 0) {
+                if (durationSec > 0) {
                     long usedSec = ("paused".equals(status) && pauseSec > 0)
                         ? (pauseSec - firstSec) : (nowSec - firstSec);
                     long remainSec = durationSec - usedSec;

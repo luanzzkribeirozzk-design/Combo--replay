@@ -15,15 +15,32 @@ android {
         versionName "1.0"
     }
 
+    signingConfigs {
+        release {
+            def ksPath = System.getenv("RX_KEYSTORE_PATH")
+            if (ksPath != null) {
+                storeFile file(ksPath)
+                storePassword System.getenv("RX_KEYSTORE_PASSWORD")
+                keyAlias System.getenv("RX_KEY_ALIAS")
+                keyPassword System.getenv("RX_KEY_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
+            debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (System.getenv("RX_KEYSTORE_PATH") != null) {
+                signingConfig signingConfigs.release
+            }
         }
         debug {
             minifyEnabled true
             shrinkResources false
+            debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
