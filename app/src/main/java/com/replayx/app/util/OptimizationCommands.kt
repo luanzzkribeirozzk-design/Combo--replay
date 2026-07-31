@@ -8,7 +8,7 @@ package com.replayx.app.util
  * Foram excluídos de propósito:
  *  - Itens de Windows/Regedit, NVIDIA/AMD e emulador (não fazem sentido em
  *    um app Android via Shizuku).
- *  - Ajustes de dalvik.vm.heap*/`ro.*` que são propriedades fixadas no boot
+ *  - Ajustes de dalvik.vm.heap* /`ro.*` que são propriedades fixadas no boot
  *    (não mudam em runtime e podem deixar o sistema instável).
  *  - Troca manual de DPI (risco real de deixar a tela ilegível).
  * Cada comando de ATIVAR tem o par correspondente em DESATIVAR, na mesma
