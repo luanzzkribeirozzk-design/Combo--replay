@@ -319,26 +319,31 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 // ── PASSO 8: Registrar device e IP ──
-                // noDevice = true: primeiro uso
-                // devId == myDev mas pode ter mudado via fallback de IP
+                // noDevice = true: dispositivo livre pra vincular (pode ser primeiro uso
+                // OU um reset manual de dispositivo feito no Firestore)
+                // hasRealFirstUsed = true: já existe um firstUsed real gravado — reset de
+                // dispositivo NUNCA deve mexer nisso, só o campo deviceId é reatribuído.
                 boolean deviceChanged = !noDevice && !fields.has("deviceId") == false
                     && fields.has("deviceId")
                     && !fields.getJSONObject("deviceId").optString("stringValue","").equals(myDev);
 
                 // Mask inclui todos os campos que salvamos
-                String patchMask = noDevice
+                String patchMask = !hasRealFirstUsed
                     ? "?updateMask.fieldPaths=deviceId&updateMask.fieldPaths=deviceModel&updateMask.fieldPaths=firstUsed&updateMask.fieldPaths=lastIP&key=" + API_KEY
                     : "?updateMask.fieldPaths=deviceId&updateMask.fieldPaths=deviceModel&updateMask.fieldPaths=lastIP&key=" + API_KEY;
                 String patchUrl = "https://firestore.googleapis.com/v1/projects/" + PROJECT
                     + "/databases/(default)/documents/keys/" + docId + patchMask;
                 JSONObject pf = new JSONObject();
-                // Sempre salvar device ID atual + modelo
+                // Sempre salvar device ID atual + modelo (isso é o que "vincula" o
+                // aparelho — independente do tempo da key)
                 pf.put("deviceId", new JSONObject().put("stringValue", myDev));
                 pf.put("deviceModel", new JSONObject().put("stringValue", deviceModel));
-                if (noDevice) {
+                if (!hasRealFirstUsed) {
+                    // Só grava firstUsed se o Firestore realmente nunca teve um valor
+                    // real — usa firstSec (que já veio certo do Passo 6.5: valor local
+                    // reaproveitado se existir, ou "agora" se for key nova de verdade)
                     pf.put("firstUsed", new JSONObject().put("timestampValue",
-                        java.time.Instant.ofEpochSecond(nowSec).toString()));
-                    firstSec = nowSec;
+                        java.time.Instant.ofEpochSecond(firstSec).toString()));
                 }
                 if (!myIP.isEmpty())
                     pf.put("lastIP", new JSONObject().put("stringValue", myIP));

@@ -1,4 +1,4 @@
-name: Build APK - ReplayX
+name: Build APK - Passador de Replay X
 
 on:
   push:
@@ -19,8 +19,18 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Setup Gradle
+      - name: Instalar Gradle 8.4
         uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.4'
+
+      - name: Gerar Gradle Wrapper
+        run: gradle wrapper --gradle-version=8.4
+
+      - name: Remover arquivos Kotlin obsoletos
+        run: |
+          rm -f app/src/main/java/com/replayx/app/ui/LoginActivity.kt
+          echo "Arquivos obsoletos removidos"
 
       - name: Restaurar keystore de release
         env:
@@ -39,9 +49,7 @@ jobs:
           RX_KEYSTORE_PASSWORD: ${{ secrets.RX_KEYSTORE_PASSWORD }}
           RX_KEY_ALIAS: ${{ secrets.RX_KEY_ALIAS }}
           RX_KEY_PASSWORD: ${{ secrets.RX_KEY_PASSWORD }}
-        run: |
-          chmod +x gradlew
-          ./gradlew assembleRelease --no-daemon --stacktrace
+        run: ./gradlew assembleRelease --no-daemon --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4

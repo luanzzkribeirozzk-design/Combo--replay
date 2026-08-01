@@ -83,12 +83,16 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     private fun startKeyTimer(user: String, days: Int, minutes: Int, firstUsedSec: Long, status: String, pausedAtSec: Long) {
         val totalMs = (days * 86400L + minutes * 60L) * 1000L
+        val nowSecDbg = System.currentTimeMillis() / 1000L
         val usedMs = if (status == "paused" && pausedAtSec > 0L)
             (pausedAtSec - firstUsedSec) * 1000L
         else
             System.currentTimeMillis() - firstUsedSec * 1000L
         var remainMs = totalMs - usedMs
         if (remainMs < 0L) remainMs = 0L
+
+        log("[DEBUG] now_sec=$nowSecDbg first_sec=$firstUsedSec diff_sec=${nowSecDbg - firstUsedSec} " +
+            "days=$days minutes=$minutes status=$status total_s=${totalMs/1000} used_s=${usedMs/1000} remain_s=${remainMs/1000}")
 
         binding.tvKeyInfo.text = "KEY: $user"
         binding.tvKeyInfo.visibility = View.VISIBLE
