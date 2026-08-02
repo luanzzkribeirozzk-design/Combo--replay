@@ -18,7 +18,7 @@ android {
     signingConfigs {
         release {
             def ksPath = System.getenv("RX_KEYSTORE_PATH")
-            if (ksPath != null) {
+            if (ksPath != null && ksPath.trim().length() > 0) {
                 storeFile file(ksPath)
                 storePassword System.getenv("RX_KEYSTORE_PASSWORD")
                 keyAlias System.getenv("RX_KEY_ALIAS")
@@ -33,7 +33,8 @@ android {
             shrinkResources true
             debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            if (System.getenv("RX_KEYSTORE_PATH") != null) {
+            def ksp = System.getenv("RX_KEYSTORE_PATH")
+            if (ksp != null && ksp.trim().length() > 0) {
                 signingConfig signingConfigs.release
             }
         }
