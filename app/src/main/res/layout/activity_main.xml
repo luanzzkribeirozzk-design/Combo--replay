@@ -324,4 +324,42 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <!-- OVERLAY AGUARDE -->
+    <FrameLayout
+        android:id="@+id/overlayAguarde"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#DD000000"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ProgressBar
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:indeterminateTint="#FFD700"
+                android:layout_marginBottom="18dp" />
+
+            <TextView
+                android:id="@+id/tvAguarde"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="AGUARDE, PASSANDO O REPLAY..."
+                android:textColor="#FFD700"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.03"
+                android:gravity="center" />
+
+        </LinearLayout>
+
+    </FrameLayout>
 </FrameLayout>

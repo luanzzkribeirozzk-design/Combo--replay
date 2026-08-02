@@ -188,6 +188,10 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     private fun startTransfer(direction: String) {
         val prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+        binding.overlayAguarde.visibility = View.VISIBLE
+        binding.btnBypassMaxToNormal.isEnabled = false
+        binding.btnBypassNormalToMax.isEnabled = false
+        val startMs = System.currentTimeMillis()
         lifecycleScope.launch {
             log("--------------------------------")
             bypassCount++
@@ -195,15 +199,20 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             val count = bypassCount
             val result = withContext(Dispatchers.IO) {
                 if (direction == "maxToNormal") {
-                    service.transferMaxToNormal(count) { msg -> lifecycleScope.launch(Dispatchers.Main) { log(msg) } }
+                    service.transferMaxToNormal(this@MainActivity, count) { msg -> lifecycleScope.launch(Dispatchers.Main) { log(msg) } }
                 } else {
-                    service.transferNormalToMax(count) { msg -> lifecycleScope.launch(Dispatchers.Main) { log(msg) } }
+                    service.transferNormalToMax(this@MainActivity, count) { msg -> lifecycleScope.launch(Dispatchers.Main) { log(msg) } }
                 }
             }
+            val elapsedSec = (System.currentTimeMillis() - startMs) / 1000.0
             if (!result.success) {
                 log("[ERR] >> BYPASS_FAIL")
             }
+            log("Concluído em %.1fs".format(elapsedSec))
             log("--------------------------------")
+            binding.overlayAguarde.visibility = View.GONE
+            binding.btnBypassMaxToNormal.isEnabled = true
+            binding.btnBypassNormalToMax.isEnabled = true
         }
     }
 

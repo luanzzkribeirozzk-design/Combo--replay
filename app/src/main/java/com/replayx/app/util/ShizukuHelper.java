@@ -1,20 +1,41 @@
 package com.replayx.app.util;
 
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 
 public class ShizukuHelper {
 
     private static final String FFM_PKG = "com.dts.freefiremax";
     private static final String FFN_PKG = "com.dts.freefireth";
-    private static final String VER_FFN = "1.129.1";
-    private static final String VER_FFM = "2.126.1";
+    // Usados só se não der pra ler a versão instalada de verdade (app não achado etc.)
+    private static final String VER_FFN_FALLBACK = "1.129.1";
+    private static final String VER_FFM_FALLBACK = "2.126.1";
 
-    public static String runMaxToNormal() {
-        return transfer(FFM_PKG, FFN_PKG, VER_FFN, "freefiremax", "freefireth");
+    /** Lê a versão (versionName) realmente instalada do pacote, ou null se não achar. */
+    private static String installedVersion(Context ctx, String pkg) {
+        try {
+            PackageInfo pi = ctx.getPackageManager().getPackageInfo(pkg, 0);
+            String v = pi.versionName;
+            return (v == null || v.trim().isEmpty()) ? null : v.trim();
+        } catch (PackageManager.NameNotFoundException e) {
+            return null;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
-    public static String runNormalToMax() {
-        return transfer(FFN_PKG, FFM_PKG, VER_FFM, "freefireth", "freefiremax");
+    public static String runMaxToNormal(Context ctx) {
+        String verFfn = installedVersion(ctx, FFN_PKG);
+        if (verFfn == null) verFfn = VER_FFN_FALLBACK;
+        return transfer(FFM_PKG, FFN_PKG, verFfn, "freefiremax", "freefireth");
+    }
+
+    public static String runNormalToMax(Context ctx) {
+        String verFfm = installedVersion(ctx, FFM_PKG);
+        if (verFfm == null) verFfm = VER_FFM_FALLBACK;
+        return transfer(FFN_PKG, FFM_PKG, verFfm, "freefireth", "freefiremax");
     }
 
     private static String transfer(String srcPkg, String dstPkg,
