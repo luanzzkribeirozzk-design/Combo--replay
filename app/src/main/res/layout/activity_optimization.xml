@@ -36,7 +36,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="BY: DEV WILL"
+                android:text="BY: REPLAY X"
                 android:textColor="#FFFFFF"
                 android:textSize="11sp"
                 android:letterSpacing="0.4"
@@ -60,7 +60,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="OTIMIZAÇÃO  ·  DEV WILL"
+                    android:text="OTIMIZAÇÃO  ·  REPLAY X"
                     android:textColor="#7B00AA"
                     android:textSize="10sp" />
 
@@ -69,7 +69,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="● VERIFICANDO"
-                    android:textColor="#FFD700"
+                    android:textColor="#00AAFF"
                     android:textSize="10sp"
                     android:textStyle="bold" />
 
@@ -170,7 +170,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="root@devwill:~/ optimization_log"
+                android:text="root@replayx:~/ optimization_log"
                 android:textColor="#00AA22"
                 android:textSize="10sp"
                 android:fontFamily="monospace" />
@@ -215,7 +215,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dev Will  ·  Dev Will"
+                android:text="REPLAY X  ·  REPLAY X"
                 android:textColor="#7B00AA"
                 android:textSize="9sp" />
 

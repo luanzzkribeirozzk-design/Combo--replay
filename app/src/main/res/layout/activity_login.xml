@@ -75,7 +75,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="BY: DEV WILL"
+                    android:text="BY: REPLAY X"
                     android:textColor="#FFFFFF"
                     android:textSize="11sp"
                     android:letterSpacing="0.4"
@@ -85,8 +85,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Dev Will"
-                    android:textColor="#FFD700"
+                    android:text="REPLAY X"
+                    android:textColor="#00AAFF"
                     android:textSize="42sp"
                     android:shadowColor="#DD00FF"
                     android:shadowDx="0"
@@ -98,7 +98,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="BYPASS  ·  DEV WILL"
+                    android:text="BYPASS  ·  REPLAY X"
                     android:textColor="#7B00AA"
                     android:textSize="10sp"
                     android:letterSpacing="0.2"
@@ -289,7 +289,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dev Will  ·  Dev Will"
+                android:text="REPLAY X  ·  REPLAY X"
                 android:textColor="#1E1600"
                 android:textSize="9sp"
                 android:layout_marginTop="32dp"

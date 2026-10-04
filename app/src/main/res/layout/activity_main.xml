@@ -36,7 +36,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="BY: DEV WILL"
+                android:text="BY: REPLAY X"
                 android:textColor="#FFFFFF"
                 android:textSize="11sp"
                 android:letterSpacing="0.4"
@@ -45,7 +45,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dev Will"
+                android:text="REPLAY X"
                 android:textColor="#FFFFFF"
                 android:textSize="36sp"
                 android:textStyle="bold" />
@@ -60,7 +60,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="BYPASS  ·  DEV WILL"
+                    android:text="BYPASS  ·  REPLAY X"
                     android:textColor="#7B00AA"
                     android:textSize="10sp" />
 
@@ -69,7 +69,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="● VERIFICANDO"
-                    android:textColor="#FFD700"
+                    android:textColor="#00AAFF"
                     android:textSize="10sp"
                     android:textStyle="bold" />
 
@@ -272,7 +272,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="root@devwill:~/ bypass_log"
+                android:text="root@replayx:~/ bypass_log"
                 android:textColor="#00AA22"
                 android:textSize="10sp"
                 android:fontFamily="monospace" />
@@ -317,7 +317,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dev Will  ·  Dev Will"
+                android:text="REPLAY X  ·  REPLAY X"
                 android:textColor="#7B00AA"
                 android:textSize="9sp" />
 
@@ -345,7 +345,7 @@
             <ProgressBar
                 android:layout_width="52dp"
                 android:layout_height="52dp"
-                android:indeterminateTint="#FFD700"
+                android:indeterminateTint="#00AAFF"
                 android:layout_marginBottom="18dp" />
 
             <TextView
@@ -353,7 +353,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="AGUARDE, PASSANDO O REPLAY..."
-                android:textColor="#FFD700"
+                android:textColor="#00AAFF"
                 android:textSize="17sp"
                 android:textStyle="bold"
                 android:letterSpacing="0.03"

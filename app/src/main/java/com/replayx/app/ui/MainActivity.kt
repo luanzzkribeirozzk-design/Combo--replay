@@ -67,10 +67,10 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         Shizuku.addBinderReceivedListenerSticky(binderReceived)
         Shizuku.addBinderDeadListener(binderDead)
         binding.btnBypassMaxToNormal.setOnClickListener {
-            if (checkShizuku()) { speak("Dev Will bypass ativado"); startTransfer("maxToNormal") }
+            if (checkShizuku()) { speak("REPLAY X bypass ativado"); startTransfer("maxToNormal") }
         }
         binding.btnBypassNormalToMax.setOnClickListener {
-            if (checkShizuku()) { speak("Dev Will bypass ativado"); startTransfer("normalToMax") }
+            if (checkShizuku()) { speak("REPLAY X bypass ativado"); startTransfer("normalToMax") }
         }
         binding.btnClearLog.setOnClickListener { clearLog() }
         binding.btnSensibilidade.setOnClickListener {
@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
         if (status == "paused") {
             binding.tvTimer.text = formatTime(remainMs)
-            binding.tvTimer.setTextColor(0xFFFFD700.toInt())
+            binding.tvTimer.setTextColor(0xFF00AAFF.toInt())
             return
         }
 
@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 binding.tvTimer.text = formatTime(ms)
                 binding.tvTimer.setTextColor(when {
                     ms < 86400000L -> 0xFFFF4444.toInt()
-                    ms < 259200000L -> 0xFFFFD700.toInt()
+                    ms < 259200000L -> 0xFF00AAFF.toInt()
                     else -> 0xFFFF6B00.toInt()
                 })
             }
