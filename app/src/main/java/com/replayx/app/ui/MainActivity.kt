@@ -73,9 +73,6 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             if (checkShizuku()) { speak("REPLAY X bypass ativado"); startTransfer("normalToMax") }
         }
         binding.btnClearLog.setOnClickListener { clearLog() }
-        binding.btnSensibilidade.setOnClickListener {
-            startActivity(Intent(this, SecureWebViewActivity::class.java))
-        }
         binding.btnOtimizacao.setOnClickListener {
             startActivity(Intent(this, OptimizationActivity::class.java))
         }
